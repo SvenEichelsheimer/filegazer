@@ -1,7 +1,7 @@
 # FileGazer - deep file analysing
 
 
-![FileGazer](src/main/resources/static/img/filegazer_small.png)
+![FileGazer](filegazer_small.png)
 
 ## Table of Content
 
