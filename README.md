@@ -3,6 +3,9 @@
 
 ![FileGazer](filegazer_small.png)
 
+
+ [![image alt text](download.png)](https://eichelsheimer.zapto.org/filegazer/filegazer-0.1.17.jar)
+
 ## Table of Content
 
 - [FileGazer - deep file analysing](#filegazer---deep-file-analysing)
