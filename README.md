@@ -506,7 +506,9 @@ Each script is defined in a FileGazerScript tag. This tag can either contain the
 
 The current version of FileGazer is available for download under 
 
-    https://filegazer.eichelsheimer.de/filegazer/filegazer-0.1.17.jar
+   [Download current version](https://eichelsheimer.zapto.org/filegazer/filegazer-0.1.17.jar)
+
+
 
 ### Setup FileGazer 
 
