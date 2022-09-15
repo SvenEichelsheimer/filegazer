@@ -3,8 +3,16 @@
 
 ![FileGazer](filegazer_small.png)
 
+## Download 
 
- [![image alt text](download.png)](https://eichelsheimer.zapto.org/filegazer/filegazer-0.1.17.jar)
+
+
+|  |  |
+| ------| ------| 
+| [![Current Version](allDownloads.png)](https://eichelsheimer.zapto.org/filegazer/filegazer-0.1.22.jar) | Current Version  |
+| [![All Versions](allDownloads.png)](https://eichelsheimer.zapto.org/filegazer) | All versions and all manuals  |
+
+
 
 ## Table of Content
 
@@ -173,7 +181,7 @@ The scripts are groovy scripts that can be as complex as desired.
 | contentScript | Name of the script (or scripts separated by commas) to be executed on the content before(!) the search/evaluation. In this way, the content to be examined can be prepared, processed or cleaned. | 
 | regExpr | RegExpr which determines whether it is a document of the defined class. |
 
-##### \<FindeClasses>
+##### \<FinderClasses>
 
 The assignment of a Finderclass to the corresponding class name is done via the attribute "name". A finder class contains 1... n "finders". Each Finder 
 searches the content for index values and assigns them to an ItemName: 
@@ -444,49 +452,104 @@ With the FileGazer scripts, the functions of FileGazer can be combined in script
 In this file, all scripts that are prepared for execution are defined. 
 
 Example: 
-    <FileGazerScriptsConfig>
+<FileGazerScriptsConfig>
 
-        <FileGazerScripts>
+    <FileGazerScripts>
 
-            <FileGazerScript name="startupDone" description="a simple example how to start a script after application startup" onStartup="true" onExit="false" onTimer="" isFileLink="false" isRestExecute="true">
-                <![CDATA[
-                            println "##################"
-                            println "#  Startup done! #"
-                            println "##################"
-                        ]]>
-            </FileGazerScript>
+        <!-- 
+            Startup and shutdown scripts
+        -->
+        <FileGazerScript name="startupDone" description="a simple example how to start a script after application startup" onStartup="true" onExit="false" onTimer="" isFileLink="false" isRestExecute="true">
+            <![CDATA[
+						println "##################"
+                        println "#  Startup done! #"
+                        println "##################"
+					]]>
+        </FileGazerScript>
+
+        <FileGazerScript name="shutDown" description="a simple example how to start a script before application shutdown" onStartup="false" onExit="true" onTimer="" isFileLink="false" isRestExecute="true">
+            <![CDATA[
+						println "##################################"
+                        println "#  about to shutdown... bye bye  #"
+                        println "##################################"
+					]]>
+        </FileGazerScript>
 
 
-            <FileGazerScript name="shutDown" description="a simple example how to start a script before application shutdown" onStartup="false" onExit="true" onTimer="" isFileLink="false" isRestExecute="true">
-                <![CDATA[
-                            println "##################################"
-                            println "#  about to shutdown... bye bye  #"
-                            println "##################################"
-                        ]]>
-            </FileGazerScript>
+        <!-- 
+            Scheduled script
+        -->
+        <FileGazerScript name="getTheAnswer" description="This script return the answer to life the universe and everything " onStartup="false" onExit="false" onTimer="0 * * ? * *" isFileLink="true" isRestExecute="true">
+            TheAnswer.groovy
+        </FileGazerScript>
 
-            <!-- 
-                    Example scripts ... 
-            -->
-            <FileGazerScript name="getTheAnswer" description="This script return the answer to life the universe and everything " onStartup="false" onExit="false" onTimer="* * * 12-14" isFileLink="true" isRestExecute="true">
-                TheAnswer.groovy
-            </FileGazerScript>
 
-            <FileGazerScript name="Doc2txt" description="Pick up all files in /Example/IN, get content from filegazer and create textfile" onStartup="false" onExit="false" onTimer="" isFileLink="true" isRestExecute="true">
-                Doc2txt.groovy
-            </FileGazerScript>
 
-            <FileGazerScript name="DocCategorization" description="Pick up all filesin /Example/IN, ask filegazer for the documenttype and move this file to ./Example/in /Example/IN/{documenttype}" onStartup="false" onExit="false" onTimer="" isFileLink="true" isRestExecute="true">
-                DocCategorization.groovy
-            </FileGazerScript>
+        <!-- 
+                Example scripts ... 
+        -->
+        <FileGazerScript name="Doc2txt" description="Pick up all files in /Example, get content from filegazer and create textfile" onStartup="false" onExit="false" onTimer="" isFileLink="true" isRestExecute="true">
+            Doc2txt.groovy
+        </FileGazerScript>
+        <FileGazerScript name="DocCategorization" description="Pick up all filesin /Example, ask filegazer for the documenttype and move this file to  ./Example/{documenttype}" onStartup="false" onExit="false" onTimer="" isFileLink="true" isRestExecute="true">
+            DocCategorization.groovy
+        </FileGazerScript>
+        <FileGazerScript name="CreateIndexControlFile" description="Pick up all filesin /Example, ask filegazer for detailinformation and create a html file to view the metadata and the file as well (just for pdf documents)" onStartup="false" onExit="false" onTimer="" isFileLink="true" isRestExecute="true">
+            CreateIndexControlFile.groovy
+        </FileGazerScript>
 
-            <FileGazerScript name="CreateIndexControlFile" description="Pick up all filesin /Example/IN, ask filegazer for detailinformation and create a html file to view the metadata and the file as well (just for pdf documents)" onStartup="false" onExit="false" onTimer="" isFileLink="true" isRestExecute="true">
-                CreateIndexControlFile.groovy
-            </FileGazerScript>
 
-        </FileGazerScripts>
+        <!-- 
+            A script which execute other scripts
+        -->
+        <FileGazerScript name="ScriptBatchExample" description="A groovy script, which run a list of script one by one " onStartup="false" onExit="false" onTimer="" isFileLink="true" isRestExecute="true">
+            ExecuteAllScripts.groovy
+        </FileGazerScript>
+            
+        <!-- 
+            Scripts which define a onBefore and/or onAfter script - a script-chain. Be careful with circle definitions!!!!
+        -->
+        <FileGazerScript name="ScriptBefore" description="A 'Before' Example" onStartup="false" onExit="false" onTimer="" isFileLink="false" isRestExecute="true">
+            <![CDATA[
+                println "##################################"
+                println "#  Before-Script                 #"
+                println "##################################"
+            ]]>
+        </FileGazerScript>
+        <FileGazerScript name="ChainScriptTest" description="This script shows, how to call a script before and after execution" 
+                                        onStartup="false" 
+                                        onExit="false"
+                                        onBefore="ScriptBefore"
+                                        onAfter="ScriptAfter1,ScriptAfter2"
+                                        onTimer="" 
+                                        isFileLink="false" 
+                                        isRestExecute="true">
 
-    </FileGazerScriptsConfig>
+            <![CDATA[
+                println "##################################"
+                println "#  Chain-Script                  #"
+                println "##################################"
+            ]]>
+        </FileGazerScript>            
+        <FileGazerScript name="ScriptAfter1" description="This script is a called after execution " onStartup="false" onExit="false" onTimer="" isFileLink="false" isRestExecute="true">
+            <![CDATA[
+                println "##################################"
+                println "#  After-Script I                #"
+                println "##################################"
+            ]]>
+        </FileGazerScript>            
+        <FileGazerScript name="ScriptAfter2" description="This script is a called after execution" onStartup="false" onExit="false" onTimer="" isFileLink="false" isRestExecute="true">
+            <![CDATA[
+                println "##################################"
+                println "#  After-Script II               #"
+                println "##################################"
+            ]]>
+        </FileGazerScript>            
+
+
+    </FileGazerScripts>
+
+</FileGazerScriptsConfig>
 
 #### FileGazerScript-Tag
 
@@ -498,6 +561,8 @@ Each script is defined in a FileGazerScript tag. This tag can either contain the
 | description | Descripton |
 | onStartup | {true,false} - should the script be executed automatically when FileGazer starts up? |
 | onExit | {true,false} - should the script be executed automatically when FileGazer shuts down? |
+| onBefore | list of scripts (separator is ',' oder ';') which are executed right before this script |
+| onAfter | list of scripts (separator is ',' oder ';') which are executed after this script |
 | onTimer | cron String (0 6,18 * * *) that specifies when the script should be executed. |
 | isLink | {true,false} - is it an embedded code (false) or the name of a script (true)? |
 | isRestExecute | {true,false} - may the script be called via the Rest API? Example: curl http://localhost:8080/filegazer/execute/Doc2txt |
@@ -505,19 +570,11 @@ Each script is defined in a FileGazerScript tag. This tag can either contain the
 
 ## Installation, setup and starting
 
-### Download 
-
-The current version of FileGazer is available for download under 
-
-   [Download current version](https://eichelsheimer.zapto.org/filegazer/filegazer-0.1.17.jar)
-
-
-
 ### Setup FileGazer 
 
 Just copy the current version of Filegazer to your host and run
 
-    java -jar filegazer-0.1.17.jar 
+    java -jar filegazer-xxxx.jar 
 	
 After the first start FileGazer create a new etc-directory (if not exists) and store some example configurationsfiles there. 
 
@@ -533,7 +590,7 @@ After the first start FileGazer create a new etc-directory (if not exists) and s
     rem may set your own java Version
     rem set JAVA_HOME=X:\FileGazer\java\jdk-18.0.1.1
 
-    set VERSION=0.1.16
+    set VERSION=0.1.20
     set FILEGAZER_JAR=filegazer-%VERSION%.jar
     set FILEGAZER_MAIN=de.samoak.filegazer.FilegazerApplication
 
@@ -580,7 +637,7 @@ Example of a WinSW configuration file:
         <workingdirectory>D:\filegazer</workingdirectory>
         <priority>normal</priority>
         <executable>c:\Program Files\Java\jdk-17.0.1\bin\java.exe</executable>
-        <arguments>-Xrs -Xms1024m -Xmx2048m -jar filegazer-0.1.16.jar -Dloader.path=D:\filegazer\lib -Dloader.main=de.samoak.filegazer.FilegazerApplication org.springframework.boot.loader.PropertiesLauncher</arguments>
+        <arguments>-Xrs -Xms1024m -Xmx2048m -jar filegazer-0.1.18.jar -Dloader.path=D:\filegazer\lib -Dloader.main=de.samoak.filegazer.FilegazerApplication org.springframework.boot.loader.PropertiesLauncher</arguments>
         <log mode="roll"></log>
     </service>
 
@@ -647,13 +704,19 @@ You find a windows setup and further instructions under: https://github.com/UB-M
 - https://en.wikipedia.org/wiki/List_of_file_signatures
 - https://www.garykessler.net/library/file_sigs.html
 
+### cron expression
+
+There are some online tools to create cron expressions. Here is an example
+
+- https://www.freeformatter.com/cron-expression-generator-quartz.html
+
+
 ## Beyond
 
 What is the issues I'll work on next ? 
 
 - Bufixing (may with your help)
-- sceduling for scripts (not implemnted yet)
-- add results of the content analyse to the search 
+- add results of the content analyse to the search
 
 
 ## Help & contact...
@@ -665,4 +728,3 @@ What is the issues I'll work on next ?
 
 In one word: feel free to contact me... I am looking forward
 
-Sven@Eichelsheimer.de
