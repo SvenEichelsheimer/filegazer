@@ -9,7 +9,7 @@
 
 |  |  |
 | ------| ------| 
-| [![Current Version](allDownloads.png)](https://eichelsheimer.zapto.org/filegazer/filegazer-0.1.22.jar) | Current Version  |
+| [![Current Version](allDownloads.png)](https://eichelsheimer.zapto.org/filegazer/filegazer-0.1.23.jar) | Current Version  |
 | [![All Versions](allDownloads.png)](https://eichelsheimer.zapto.org/filegazer) | All versions and all manuals  |
 
 
