@@ -13,7 +13,6 @@
 | [![All Versions](allDownloads.png)](https://eichelsheimer.zapto.org/filegazer) | All versions and all manuals  |
 
 
-
 ## Table of Content
 
 - [FileGazer - deep file analysing](#filegazer---deep-file-analysing)
@@ -27,7 +26,7 @@
     + [Content Analyse](#content-analyse)
       - [Aufbau der FileGazerContentAnalyse.xml](#aufbau-der-filegazercontentanalysexml)
         * [\<Classification>](#--classification-)
-        * [\<FindeClasses>](#--findeclasses-)
+        * [\<FinderClasses>](#--findeclasses-)
         * [\<Scripts>](#--scripts-)
         * [Beispiel](#beispiel)
   * [Interfaces](#interfaces)
@@ -63,7 +62,7 @@
 ## Intro
 
 
-**FileGazer** 'collect' all available information for a certain file. This is done with the help of the *inspectors* (currently we have 6 inspectors). You can use FileGazes as a Web Application to get all these informations from a file (or search files) or you use FileGazer REST API.
+**FileGazer** 'collect' all available information for a certain file. This is done with the help of the *inspectors* (currently we have 6 inspectors). You can use FileGazer as a Web Application to get all these informations from a file (or search files) or you use FileGazer's REST API.
 
 Current inspector:
 - Base (Filename, Size, Timestamps...)
@@ -71,7 +70,7 @@ Current inspector:
 - Hashcode (determ a list of well known Hascodes)
 - Barcode (determ available barcodes - on documents: pdf, tif, png, jpg)
 - Tika (use Apache Tika to get all available attribute/metadata and also content. If tesseract is install also do a OCR)
-- Content analysing, Based on the file content and your rules Filegazer categorize the file (document) and extract indexdata
+- Content analysing, Based on the file content and your rules FileGazer categorize the file (document) and extract indexdata
 
 (Please find a detail description for all inspectors in this document)
 
@@ -97,7 +96,7 @@ Current inspector:
 
 ## Inspectors
 
-A inspector is a piece of code which invesigate the given file(s). This chapter descripes the available inspectors in detail. 
+A inspector is a piece of code which investigate the given file(s). This chapter descripes the available inspectors in detail. 
 
 ### Base
 
@@ -320,7 +319,7 @@ A prepare script can also be given an argument. This argument can be queried in 
 
 ## Interfaces
 
-Currently FileGazer offers a WebApplication and a simple REST-Service.
+Currently FileGazer offers a WebApplication and a REST-Service.
 
 ### Web-Application 
 
@@ -567,6 +566,7 @@ Each script is defined in a FileGazerScript tag. This tag can either contain the
 | isLink | {true,false} - is it an embedded code (false) or the name of a script (true)? |
 | isRestExecute | {true,false} - may the script be called via the Rest API? Example: curl http://localhost:8080/filegazer/execute/Doc2txt |
 
+If a FileGazerScript is started by the scheduler, it is ensured that a script is only executed once at any one time. On the other hand, different scripts can be executed in parallel.
 
 ## Installation, setup and starting
 
@@ -659,7 +659,23 @@ This great because you can easily change your setting or you prepare a couple of
 java -jar FileGazer-xxxxx.jar --server.port=9090
 This is a good way if you have just a few parameters to change.
 
-Please check the content of application.propieties - you will find a detailed description for all parameters.
+
+
+| Attribut | default | description |
+| ----- | ------ | ----- | 
+| filegazer.autosetup.active | true | Falls true prüft FileGazer, ob das etc-Verzeichnis vorhanden ist. Falls nicht werden alle Verzeichnisse angelegt, die (default)Konfigurationsdateien, die Dokumentation und die Beispiele werden extrahiert | 
+| filegazer.ui.open | true | Falls true kann das Webfrontend verwendet werden. |
+| filegazer.ui.defaultpath | | If you open the inspections dialog - this is the default directory. Empty means 'current directory' |
+| filegazer.etc | ./etc | path for configurationfiles | 
+| filegazer.etc.xslt | ./etc/xslt | Where to find all xslts?  |
+| filegazer.etc.scripts | ./etc/scripts | If there is no path given in "FileGazerScripts.xml", FileGazer try to find find scripts here |
+| filegazer.scripts.configfile | FileGazerScripts.xml | config file for scripting ... relative to "filegazer.etc" | 
+| filegazer.transformation.filegazerfile2Json | FileGazer2Json.xsl | Transformationscript which convert the default xml result to a jsonformat |
+| filegazer.inspector.barcode.max.pages | -1 | set to the number of pages (start at page 1) you want to inspect. -1 means: all pages | 
+| filegazer.inspector.tika.contentsize | -1 | How much (bytes) Content should we read (-1 means "all") | 
+| filegazer.inspector.tika.pdfbox.minsize | 200 | If PDFbox found content ... it must be minimum this value - otherwise it is "no content" and FileGazer runs a OCR |
+| filegazer.inspector.tika.skipocr | false | Should FileGazer start a local installed OCR (tesseract) | 
+| filegazer.inspector.contentanalyse.config | FileGazerContentAnalyse.xml | Config for (text)content analysing ... file found relativ to "etc" directory | 
 
 ### Install tesseract (for OCR)
 
